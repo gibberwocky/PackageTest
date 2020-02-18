@@ -14,9 +14,7 @@ permutations, is 0.01. Defaults to 100,000.}
 
 \item{TSSwindow}{This represents the distance over which nearby variants will be selected,  either side of the transcript start site. Defaults to 500kb}
 
-\item{pval_threshold}{There is a theoretical minimum p-value for each particular combination of reference and alternative alleles for a given set of individuals for a given nearby variant of an ASE site
-. 
-\t\t\t This parameter sets the upper limit. Default is 0.00005. In this example the model will not be run if it is not possible to reach a p-value as low as 0.00005, even theoretically.}
+\item{pval_threshold}{There is a theoretical minimum p-value for each particular combination of reference and alternative alleles for a given set of individuals for a given nearby variant of an ASE site. This parameter sets the upper limit. Default is 0.00005. In this example the model will not be run if it is not possible to reach a p-value as low as 0.00005, even theoretically.}
 
 \item{input_file}{This is the RData file outputted from the first function, gen.input}
 
