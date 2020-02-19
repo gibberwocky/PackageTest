@@ -124,15 +124,15 @@ Run.Model <- function(inputObj, output_prefix, task = 1, totalTasks = 1, minInd 
                 if (numPerms > 0) {
                   # do the permutations
                   perms <- 100
-                  totalPerms <- 100
+                  totalPerms <- 0
                   cat("Beginning permutations\n")
                   # print(Sys.time())
-                  while (totalPerms <= numPerms) {
+                  while (totalPerms < numPerms) {
                     # get just nominal signif
                     toPerm <- theseResults[which(theseResults$Variant.p.value < pval_threshold & theseResults$numPermExceed.Variant < 5), ]
                     if(isTRUE(other_all))
                     {
-                      toPerm <- theseResults[which(theseResults$Variant.p.value < pval_threshold & theseResults$numPermExceed.Variant < 5 & theseResults$numPermExceed.Interaction < 5), ]
+                      toPerm <- theseResults[which(theseResults$Interaction.p.value < pval_threshold & theseResults$numPermExceed.Interaction < 5), ]
                     }
                     numLeft <- dim(toPerm)[1]
                     # cat(paste(c(totalPerms, '\n'), collapse=' '))
@@ -144,9 +144,14 @@ Run.Model <- function(inputObj, output_prefix, task = 1, totalTasks = 1, minInd 
                       permResults <- fitPerms(exprVar2, toPerm, perms, covarNames, hetCounts[i, ],other_all)
                       theseResults[rownames(theseResults) %in% rownames(permResults), ]$numPerm <- permResults$numPerm
                       theseResults[rownames(theseResults) %in% rownames(permResults), ]$numPermExceed <- permResults$numPermExceed
+                      if(isTRUE(altAll)) {
+                        theseResults[rownames(theseResults) %in% rownames(permResults), ]$numPermExceed.Variant <- permResults$numPermExceed.Variant
+                        theseResults[rownames(theseResults) %in% rownames(permResults), ]$numPermExceed.Interaction <- permResults$numPermExceed.Interaction
+                      }
                     }
-                    print(paste(c(totalPerms, " permutations completed"), collapse = ""))
                     totalPerms <- totalPerms + perms
+                    print(paste(c(totalPerms, " permutations completed"), collapse = ""))
+                    
                   }
                 }
                 #results <- rbind.fill(results, theseResults[which(theseResults$Variant_p <= 1), ])
