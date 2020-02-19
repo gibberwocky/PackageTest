@@ -144,7 +144,7 @@ Run.Model <- function(inputObj, output_prefix, task = 1, totalTasks = 1, minInd 
                       permResults <- fitPerms(exprVar2, toPerm, perms, covarNames, hetCounts[i, ],other_all)
                       theseResults[rownames(theseResults) %in% rownames(permResults), ]$numPerm <- permResults$numPerm
                       theseResults[rownames(theseResults) %in% rownames(permResults), ]$numPermExceed <- permResults$numPermExceed
-                      if(isTRUE(altAll)) {
+                      if(isTRUE(other_all)) {
                         theseResults[rownames(theseResults) %in% rownames(permResults), ]$numPermExceed.Variant <- permResults$numPermExceed.Variant
                         theseResults[rownames(theseResults) %in% rownames(permResults), ]$numPermExceed.Interaction <- permResults$numPermExceed.Interaction
                       }
