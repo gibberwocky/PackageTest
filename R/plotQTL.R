@@ -18,16 +18,21 @@ plotQTL <- function(modelOut, aseVar, qtlVar, otherAll = FALSE) {
     exprData$alt_all<-exprData[,qtlVar][seq_len(length(exprData[,qtlVar])) + c(1,-1)]
     
     dodge <- position_dodge(width = 0.7)
-    p1 <- ggplot(exprData, aes(x = as.factor(get(qtlVar)), y = RPM)) + geom_violin(trim = FALSE, position = dodge, aes(fill = as.factor(get(qtlVar)))) + 
+    plots<-list()
+    plots[[1]] <- ggplot(exprData, aes(x = as.factor(get(qtlVar)), y = RPM)) + geom_violin(trim = FALSE, position = dodge, aes(fill = as.factor(get(qtlVar)))) + 
         geom_boxplot(width = 0.2, position = dodge, fill = "white") + geom_dotplot(binaxis = "y", stackdir = "center", dotsize = 0.5) + 
         ylab(paste("RPM at ", aseVar, sep = "")) + xlab(paste("Allele at ", qtlVar, sep = "")) + theme_pubr() + stat_compare_means(label.x = 1.3) + 
         theme(legend.position = "none")
-    
+  
     if(isTRUE(otherAll))
     {
-      p1<-p1 + facet_grid(. ~ alt_all)
+        #p1<-p1 
+        plots[[2]] <- ggplot(exprData, aes(x = as.factor(alt_all), y = RPM)) + geom_violin(trim = FALSE, position = dodge, aes(fill = as.factor(get(qtlVar)))) + 
+            geom_boxplot(width = 0.2, position = dodge, fill = "white") + geom_dotplot(binaxis = "y", stackdir = "center", dotsize = 0.5) + 
+            ylab(paste("RPM at ", aseVar, sep = "")) + xlab(paste("Allele on other haplotype at ", qtlVar, sep = "")) + theme_pubr() + stat_compare_means(label.x = 1.3) + 
+            theme(legend.position = "none") + facet_grid(. ~ as.factor(get(qtlVar)))
     }
-    p1
+    ggarrange(plotlist = plots, ncol=1)
     
     #scatDat<-spread(exprData[,c("Ind","All", "RPM")], key=All, value=RPM)
     #colnames(scatDat)<-c("Ind", "Allele0", "Allele1")
