@@ -37,9 +37,10 @@
 #'NB: The smallest possible p-value attainable as a result of running permutations is 1/numPerms. Hence, there is no advantage to setting the minimum p-value threshold to below this number.
 
 
-Run.Model <- function(inputObj, output_prefix, task = 1, totalTasks = 1, minInd = 10, numPerms = 1e+05, TSSwindow = 5e+05, pval_threshold = 5e-05, other_all = FALSE) {
+Run.Model <- function(inputObj, output_prefix, task = 1, totalTasks = 1, minInd = 10, numPerms = 1e+05, TSSwindow = 5e+05, pval_threshold = 5e-05, other_all = FALSE, seed=10) {
     # progress_file = paste(c(progress_path, 'progress_', Chromosome, '_task', Task, '.RData'), collapse='')
     
+    set.seed(seed)
     
     if (is.numeric(task) & is.numeric(totalTasks) & (task <= totalTasks)) {
         hetCounts <- getHetCounts(task, totalTasks, minInd, inputObj)
